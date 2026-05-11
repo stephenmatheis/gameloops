@@ -1,0 +1,16 @@
+{
+    "name": "gameloops",
+    "version": "1.0.0",
+    "description": "",
+    "homepage": "https://github.com/stephenmatheis/gameloops#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stephenmatheis/gameloops.git"
+    },
+    "license": "ISC",
+    "author": "stephen@matheis.email",
+    "type": "module",
+    "scripts": {
+        "format": "npx prettier . --write"
+    }
+}

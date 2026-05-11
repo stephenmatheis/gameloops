@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Loops</title>
+    <style>
+        * {
+            user-select: none;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const SIZE = 64;
+        const GAP = 8;
+
+        const canvas = document.getElementById("canvas");
+        // canvas.width = window.innerWidth;
+        // canvas.height = window.innerHeight;
+
+        const ctx = canvas.getContext('2d');
+        // ctx.scale(2, 2)
+
+        const rows = [
+            ['red', 'green', 'blue'],
+            ['purple', 'orange', 'gray'],
+            ['pink', 'brown', 'black'],
+        ];
+
+
+        for (let row = 0; row < rows.length; row++) {
+            const cells = rows[row];
+
+            for (let column = 0; column < cells.length; column++) {
+                const fill = cells[column];
+                const left = (column * SIZE) + (GAP * column);
+                const top = (row * SIZE) + (GAP * row);
+
+                // console.log(row, column, fill, top, left);
+
+                // pixel
+                ctx.fillStyle = cells[column];
+                ctx.fillRect(left, top, SIZE, SIZE);
+
+                // text
+                ctx.fillStyle = "white";
+                ctx.font = "16px monospace";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(`(${row},${column})`, left + SIZE / 2, top + SIZE / 2);
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>

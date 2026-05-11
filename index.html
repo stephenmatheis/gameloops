@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22white%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%2228%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%2229%22%20y%3D%222%22%20width%3D%221%22%20height%3D%2228%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%222%22%20width%3D%221%22%20height%3D%2228%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2228%22%20height%3D%221%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2229%22%20width%3D%2228%22%20height%3D%221%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2220%22%20width%3D%2228%22%20height%3D%221%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2211%22%20width%3D%2228%22%20height%3D%221%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%222%22%20width%3D%221%22%20height%3D%2228%22%20fill%3D%22%23888888%22%2F%3E%3Crect%20x%3D%2212%22%20y%3D%2212%22%20width%3D%228%22%20height%3D%228%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E">
+    <title>Game Loops</title>
+    <style>
+        :root {
+            --grid-color: #dddddd;
+            --pixel-border-color: #404040;
+        }
+
+        * {
+            user-select: none;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        html {
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        body {
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            background: none;
+            border: none;
+            border-radius: none;
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        .header,
+        .pixel,
+        .total {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 10px;
+        }
+
+        #display {
+            position: relative;
+            display: grid;
+
+            .pixel {
+                background-color: #ffffff;
+
+                &:hover {
+                    background-color: #000000;
+                    border: solid .5px var(--pixel-border-color);
+                    color: transparent;
+                    z-index: 1;
+                }
+            }
+
+            .col-lines,
+            .row-lines {
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                display: flex;
+
+                .line {
+                    position: relative;
+                    display: flex;
+                    font-size: 10px;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        background-color: var(--grid-color);
+                    }
+                }
+            }
+
+            .col-lines {
+                .line {
+                    height: 100%;
+                    width: 20px;
+                    justify-content: center;
+
+                    &:first-child {
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -0.5px;
+                            height: 100%;
+                            width: 1px;
+                            background-color: var(--grid-color);
+
+                        }
+                    }
+
+                    &::after {
+                        top: 0;
+                        right: -0.5px;
+                        height: 100%;
+                        width: 1px;
+                    }
+
+                    &:last-child {
+                        &::after {
+                            right: 0px;
+                        }
+                    }
+                }
+            }
+
+            .row-lines {
+                flex-direction: column;
+
+                .line {
+                    height: 20px;
+                    width: 100%;
+                    align-items: center;
+
+
+                    &:first-child {
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0px;
+                            left: 0;
+                            height: 1px;
+                            width: 100%;
+                            background-color: var(--grid-color);
+
+                        }
+                    }
+
+
+                    &::after {
+                        bottom: -0.5px;
+                        left: 0;
+                        height: 1px;
+                        width: 100%;
+                    }
+
+                    &:last-child {
+                        &::after {
+                            bottom: 0px;
+                        }
+                    }
+                }
+            }
+        }
+
+        #ui {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .column-headers,
+            .row-headers {
+                pointer-events: all;
+                position: absolute;
+                display: flex;
+            }
+
+            .column-headers {
+                flex-direction: row;
+            }
+
+            .row-headers {
+                flex-direction: column;
+            }
+
+            .tools {
+                pointer-events: all;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+
+                button {
+                    cursor: pointer;
+                }
+            }
+
+            .readout {
+                pointer-events: all;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="display" oncontextmenu="return false;">
+        <!-- Intentionally left empty.-->
+    </div>
+    <div id="ui">
+        <!-- Intentionally left empty.-->
+    </div>
+    <script>
+        const BLOCK_WIDTH = 20;
+        const BLOCK_HEIGHT = 20;
+        const GAP_SIZE = 0;
+        const GRID_COLOR = '#e0e0e050';
+        const TEXT_COLOR = '#767676';
+
+        let isPointerDown = false;
+        let isErase = false;
+
+        window.addEventListener('resize', debounce(() => main()));
+
+        main();
+
+        function main() {
+            const maxCols = (Math.floor(window.innerWidth / (BLOCK_WIDTH + GAP_SIZE))) - 2;
+            const maxRows = (Math.floor(window.innerHeight / (BLOCK_HEIGHT + GAP_SIZE))) - 2;
+
+            console.log(`Grid size: ${maxCols} columns x ${maxRows} rows`);
+
+            UI(maxCols, maxRows);
+            Display(maxCols, maxRows);
+        }
+
+        function debounce(func, delay = 100) {
+            let timer;
+
+            return function (...args) {
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        }
+
+        function UI(maxCols, maxRows) {
+            const ui = document.querySelector('#ui');
+
+            if (!ui) return;
+
+            ui.innerHTML = '';
+
+            // blocks + gap + border
+            ui.style.width = `${(maxCols * BLOCK_WIDTH) + (GAP_SIZE ? maxCols - GAP_SIZE : 0) + (GAP_SIZE * 2)}px`;
+            ui.style.height = `${(maxRows * BLOCK_HEIGHT) + (GAP_SIZE ? maxRows - GAP_SIZE : 0) + (GAP_SIZE * 2)}px`;
+
+            ColumnHeaders(maxCols);
+            RowHeaders(maxRows);
+            Tools();
+            Readout();
+        }
+
+        function ColumnHeaders(cols = 80) {
+            let columnHeaders = /*html*/ `
+                <div
+                    style="
+                        top: ${-BLOCK_HEIGHT}px; 
+                        left: 0; 
+                        gap: ${GAP_SIZE}px;
+                        color: ${TEXT_COLOR};
+                    " 
+                    class="column-headers"
+                >
+            `;
+
+            for (let i = 0; i < cols; i++) {
+                const value = i + 1;
+
+                // columnHeaders += /*html*/ `
+                //     <div 
+                //         style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px" 
+                //         class="header"
+                //     >
+                //         ${value % 10 === 0 ? '&VerticalBar;' : '&centerdot;'}
+                //     </div>
+                // `;
+
+                columnHeaders += /*html*/ `
+                    <div 
+                        style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px"
+                        class="header"
+                    >
+                        ${i}
+                    </div>
+                `;
+            }
+
+            columnHeaders += /*html*/ `</div>`;
+
+            const ui = document.querySelector('#ui');
+            ui.insertAdjacentHTML('beforeend', columnHeaders);
+        }
+
+        function RowHeaders(cols) {
+            let headers = /*html*/ `
+                <div 
+                    style="
+                        top: 0;
+                        left: ${-BLOCK_WIDTH}px;
+                        gap: ${GAP_SIZE}px;
+                        color: ${TEXT_COLOR};
+                    "
+                    class="row-headers"
+                >
+            `;
+
+            for (let i = 0; i < cols; i++) {
+                const value = i + 1;
+
+                headers += /*html*/ `
+                    <div 
+                        style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px;"
+                        class="header"
+                    >
+                        ${i}
+                    </div>
+                `;
+            }
+
+            headers += /*html*/ `</div>`;
+
+            const ui = document.querySelector('#ui');
+
+            if (!ui) return;
+
+            ui.insertAdjacentHTML('beforeend', headers);
+        }
+
+        function Display(cols, rows) {
+            const display = document.querySelector('#display');
+
+            if (!display) return;
+
+            display.innerHTML = '';
+
+            display.style.gridTemplateColumns = `repeat(${cols}, ${BLOCK_WIDTH}px)`;
+            display.style.gridTemplateRows = `repeat(${rows}, ${BLOCK_HEIGHT}px)`;
+            display.style.gap = `${GAP_SIZE}px`;
+
+            display.addEventListener('mouseleave', () => {
+                isPointerDown = false;
+                isErase = false;
+            });
+
+
+            Pixels(cols, rows);
+            GridLines(cols, rows);
+        }
+
+        function Pixels(cols, rows) {
+            const display = document.querySelector('#display');
+
+            if (!display) return;
+
+            let pixels = '';
+
+            for (let i = 0; i < cols * rows; i++) {
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+
+                pixels += /*html*/ `
+                    <div 
+                        class="pixel" 
+                        data-index="${i}"
+                        data-row="${row}"
+                        data-col="${col}"
+                        oncontextmenu="return false;"
+                    >
+                        <!-- &centerdot; -->
+                    </div>
+                `;
+            }
+
+            display.insertAdjacentHTML('beforeend', pixels);
+
+            const nodes = display.querySelectorAll('.pixel');
+
+            nodes.forEach(node => {
+                node.addEventListener('pointerdown', (event) => {
+                    event.preventDefault();
+
+                    isPointerDown = true;
+
+                    if (event.button === 2) {
+                        event.preventDefault();
+
+                        isErase = true;
+
+                        erase(node);
+
+                        return;
+                    }
+
+                    fill(node);
+                });
+
+                node.addEventListener('pointerup', (event) => {
+                    event.preventDefault();
+
+                    isPointerDown = false;
+                    isErase = false;
+                });
+
+                node.addEventListener('pointerenter', () => {
+                    const readout = document.querySelector('.readout');
+
+                    if (!readout) return;
+
+                    const text = /*html*/ `${node.dataset.index} (${node.dataset.row}, ${node.dataset.col})`;
+
+                    readout.innerHTML = text;
+
+                    if (!isPointerDown) return;
+
+                    if (isErase) {
+                        console.log('erase', text);
+                        erase(node);
+                    } else {
+                        console.log('paint', text);
+                        fill(node);
+                    }
+                })
+            });
+
+            function fill(node) {
+                node.style.backgroundColor = '#000000';
+                node.style.border = 'solid .5px var(--pixel-border-color)';
+                node.style.zIndex = 1;
+            }
+
+            function erase(node) {
+                node.style.backgroundColor = '#ffffff';
+                node.style.border = 'none';
+                node.style.zIndex = 0;
+            }
+        }
+
+        function GridLines(cols, rows) {
+            const display = document.querySelector('#display');
+
+            if (!display) return;
+
+            let grid = /*html*/ `<div class="col-lines">`;
+
+            for (let i = 0; i < cols; i++) {
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+
+                grid += /*html*/ `<div class="line"></div>`;
+            }
+
+            grid += /*html*/ `
+                </div>
+                <div class="row-lines">
+            `;
+
+
+            for (let i = 0; i < rows; i++) {
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+
+                grid += /*html*/ `<div class="line"></div>`;
+            }
+
+            grid += /*html*/ `</div>`;
+
+            display.insertAdjacentHTML('beforeend', grid);
+        }
+
+        function Tools() {
+            const ui = document.querySelector('#ui');
+
+            if (!ui) return;
+
+            ui.insertAdjacentHTML('beforeend', /*html*/ `
+                <div
+                    style="bottom: ${-BLOCK_HEIGHT}px; height: ${BLOCK_HEIGHT}px" 
+                    class="tools"
+                >
+                    <button class="reset">Reset</button>
+
+                </div>
+            `);
+
+            const reset = ui.querySelector('.reset');
+
+            if (!reset) return;
+
+            reset.addEventListener('pointerdown', () => {
+                const nodes = display.querySelectorAll('.pixel');
+
+                nodes.forEach(node => {
+                    node.style.backgroundColor = '#ffffff';
+                });
+            });
+        }
+
+        function Readout() {
+            const ui = document.querySelector('#ui');
+
+            if (!ui) return;
+
+            ui.insertAdjacentHTML('beforeend', /*html*/ `
+                <div
+                    style="
+                        bottom: ${-BLOCK_HEIGHT}px; 
+                        right: 0; 
+                        height: ${BLOCK_HEIGHT}px;
+                        color: ${TEXT_COLOR};
+                    " 
+                    class="readout"
+                >
+                    0 (0, 0)
+                </div>
+            `);
+
+            // TODO: On pointerdown then pointermove, display how many squares have been painted
+        }
+    </script>
+</body>
+
+</html>

@@ -1,133 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Loops</title>
-    <style>
-        * {
-            user-select: none;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        #world {
-            height: 100dvh;
-            width: 100vw;
-
-            .block {
-                cursor: pointer;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100px;
-                height: 100px;
-                background-color: black;
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game Loops</title>
+        <style>
+            * {
+                user-select: none;
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
             }
-        }
 
-        #ui {
-            pointer-events: none;
-            position: fixed;
-            height: 100dvh;
-            width: 100vw;
-            top: 0;
-            left: 0;
+            #world {
+                height: 100dvh;
+                width: 100vw;
 
-            .top {
+                .block {
+                    cursor: pointer;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100px;
+                    height: 100px;
+                    background-color: black;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            #ui {
+                pointer-events: none;
                 position: fixed;
+                height: 100dvh;
                 width: 100vw;
                 top: 0;
                 left: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
 
-                button {
-                    pointer-events: all;
-                    cursor: pointer;
+                .top {
+                    position: fixed;
+                    width: 100vw;
+                    top: 0;
+                    left: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1rem;
 
+                    button {
+                        pointer-events: all;
+                        cursor: pointer;
+                    }
                 }
             }
-        }
-    </style>
-</head>
+        </style>
+    </head>
 
-<body>
-    <div id="world">
-        <!-- Blank on purpose. Go to script. -->
-    </div>
-    <div id="ui">
-        <div class="top">
-            <button>Button 1</button>
-            <button>Button 2</button>
-            <button>Button 3</button>
+    <body>
+        <div id="world">
+            <!-- Blank on purpose. Go to script. -->
         </div>
-    </div>
-    <script>
-        // Counters
-        let objectId = 0;
+        <div id="ui">
+            <div class="top">
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+            </div>
+        </div>
+        <script>
+            // Counters
+            let objectId = 0;
 
-        // Create the world.
-        const world = World();
-        const game = Game();
-        const player = Player();
+            // Create the world.
+            const world = World();
+            const game = Game();
+            const player = Player();
 
-        game.log('Game loaded.');
+            game.log('Game loaded.');
 
-        world.add(Create().block());
+            world.add(Create().block());
 
-        game.log('Block created.')
+            game.log('Block created.');
 
-        game.log('Waiting for player input...');
+            game.log('Waiting for player input...');
 
+            // Functions
+            function World() {
+                const world = document.querySelector('#world');
 
-        // Functions
-        function World() {
-            const world = document.querySelector('#world');
-
-            return {
-                add(object) {
-                    world.insertAdjacentHTML('beforeend', object);
-                },
-                log(msg) {
-                    console.log(`(World) ${msg}`);
-                }
+                return {
+                    add(object) {
+                        world.insertAdjacentHTML('beforeend', object);
+                    },
+                    log(msg) {
+                        console.log(`(World) ${msg}`);
+                    },
+                };
             }
-        }
 
-        function Game() {
-            return {
-                log(msg) {
-                    console.log(`(Game) ${msg}`);
-                }
+            function Game() {
+                return {
+                    log(msg) {
+                        console.log(`(Game) ${msg}`);
+                    },
+                };
             }
-        }
 
-        function Player() {
-            return {
-                log(msg) {
-                    console.log(`(Player) ${msg}`);
-                }
+            function Player() {
+                return {
+                    log(msg) {
+                        console.log(`(Player) ${msg}`);
+                    },
+                };
             }
-        }
 
-        function Create() {
-            return {
-                block() {
-                    objectId++;
-                    const size = 100;
-                    const top = (window.innerHeight / 2) - (size / 2);
-                    const left = (window.innerWidth / 2) - (size / 2);
+            function Create() {
+                return {
+                    block() {
+                        objectId++;
+                        const size = 100;
+                        const top = window.innerHeight / 2 - size / 2;
+                        const left = window.innerWidth / 2 - size / 2;
 
-                    return /*html*/ `
+                        return /*html*/ `
                         <div
                             style="
                                 width: ${size}px;
@@ -147,10 +144,9 @@
                             ${objectId}
                         </div>
                     `;
-                }
+                    },
+                };
             }
-        }
-    </script>
-</body>
-
+        </script>
+    </body>
 </html>

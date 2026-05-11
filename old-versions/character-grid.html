@@ -1,140 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Loops</title>
-    <style>
-        * {
-            user-select: none;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header,
-        .pixel,
-        .total {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: monospace;
-            font-size: 12px;
-        }
-
-        #display {
-            display: grid;
-
-            .pixel {
-                background-color: #0000ff20;
-                color: #0000ff;
-            }
-        }
-
-        #ui {
-            pointer-events: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-
-            .column-headers,
-            .row-headers {
-                pointer-events: all;
-                position: absolute;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game Loops</title>
+        <style>
+            * {
+                user-select: none;
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
             }
 
-
-
-            .column-headers {
+            body {
+                height: 100dvh;
                 display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-                .header {
-                    background-color: #ff000020;
-                    color: #ff0000;
-                }
+            .header,
+            .pixel,
+            .total {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: monospace;
+                font-size: 12px;
+            }
 
-                .total {
-                    color: #ff0000;
+            #display {
+                display: grid;
+
+                .pixel {
+                    background-color: #0000ff20;
+                    color: #0000ff;
                 }
             }
 
-            .row-headers {
-                .header {
-                    background-color: hsla(160, 100%, 16%, 30%);
-                    color: hsla(160, 100%, 30%, 100%);
+            #ui {
+                pointer-events: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                .column-headers,
+                .row-headers {
+                    pointer-events: all;
+                    position: absolute;
                 }
 
-                .total {
-                    color: hsla(160, 100%, 30%, 100%);
+                .column-headers {
+                    display: flex;
+
+                    .header {
+                        background-color: #ff000020;
+                        color: #ff0000;
+                    }
+
+                    .total {
+                        color: #ff0000;
+                    }
+                }
+
+                .row-headers {
+                    .header {
+                        background-color: hsla(160, 100%, 16%, 30%);
+                        color: hsla(160, 100%, 30%, 100%);
+                    }
+
+                    .total {
+                        color: hsla(160, 100%, 30%, 100%);
+                    }
                 }
             }
-        }
-    </style>
-</head>
+        </style>
+    </head>
 
-<body>
-    <div id="display"></div>
-    <div id="ui"></div>
-    <script>
-        const BLOCK_WIDTH = 8;
-        const BLOCK_HEIGHT = 18;
+    <body>
+        <div id="display"></div>
+        <div id="ui"></div>
+        <script>
+            const BLOCK_WIDTH = 8;
+            const BLOCK_HEIGHT = 18;
 
-        window.addEventListener('resize', debounce(() => main()));
+            window.addEventListener(
+                'resize',
+                debounce(() => main()),
+            );
 
-        main();
+            main();
 
-        function main() {
-            const maxCols = (Math.floor(window.innerWidth / BLOCK_WIDTH)) - 9;
-            const maxRows = (Math.floor(window.innerHeight / BLOCK_HEIGHT)) - 3;
+            function main() {
+                const maxCols = Math.floor(window.innerWidth / BLOCK_WIDTH) - 9;
+                const maxRows = Math.floor(window.innerHeight / BLOCK_HEIGHT) - 3;
 
-            console.log(`Grid size: ${maxCols} columns x ${maxRows} rows`);
+                console.log(`Grid size: ${maxCols} columns x ${maxRows} rows`);
 
-            UI(maxCols, maxRows);
-            Display(maxCols, maxRows);
-        }
+                UI(maxCols, maxRows);
+                Display(maxCols, maxRows);
+            }
 
-        function debounce(func, delay = 100) {
-            let timer;
+            function debounce(func, delay = 100) {
+                let timer;
 
-            return function (...args) {
-                clearTimeout(timer);
+                return function (...args) {
+                    clearTimeout(timer);
 
-                timer = setTimeout(() => {
-                    func.apply(this, args);
-                }, delay);
-            };
-        }
+                    timer = setTimeout(() => {
+                        func.apply(this, args);
+                    }, delay);
+                };
+            }
 
+            function UI(maxCols, maxRows) {
+                const ui = document.querySelector('#ui');
 
-        function UI(maxCols, maxRows) {
-            const ui = document.querySelector('#ui');
+                if (!ui) return;
 
-            if (!ui) return;
+                ui.innerHTML = '';
+                ui.style.width = `${maxCols * BLOCK_WIDTH}px`;
+                ui.style.height = `${maxRows * BLOCK_HEIGHT}px`;
 
-            ui.innerHTML = '';
-            ui.style.width = `${maxCols * BLOCK_WIDTH}px`;
-            ui.style.height = `${maxRows * BLOCK_HEIGHT}px`;
+                ColumnHeaders(maxCols);
+                RowHeaders(maxRows);
+            }
 
-            ColumnHeaders(maxCols);
-            RowHeaders(maxRows);
-        }
+            function ColumnHeaders(cols = 80) {
+                let columnHeaders = /*html*/ `<div style="top: ${-BLOCK_HEIGHT}px; left: 0;" class="column-headers">`;
 
-        function ColumnHeaders(cols = 80) {
-            let columnHeaders = /*html*/ `<div style="top: ${-BLOCK_HEIGHT}px; left: 0;" class="column-headers">`;
+                for (let i = 0; i < cols; i++) {
+                    const value = i + 1;
 
-            for (let i = 0; i < cols; i++) {
-                const value = i + 1;
-
-                columnHeaders += /*html*/ `
+                    columnHeaders += /*html*/ `
                     <div 
                         style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px" 
                         class="header"
@@ -142,24 +141,24 @@
                         ${value % 10 === 0 ? '|' : '.'}
                     </div>
                 `;
-            }
+                }
 
-            columnHeaders += /*html*/ `
+                columnHeaders += /*html*/ `
                     <div style="height: ${BLOCK_HEIGHT}px" class="total">${cols}</div>
                 </div>
             `;
 
-            const ui = document.querySelector('#ui');
-            ui.insertAdjacentHTML('beforeend', columnHeaders);
-        }
+                const ui = document.querySelector('#ui');
+                ui.insertAdjacentHTML('beforeend', columnHeaders);
+            }
 
-        function RowHeaders(cols) {
-            let headers = /*html*/ `<div style="top: 0; left: ${-BLOCK_WIDTH}px;" class="row-headers">`;
+            function RowHeaders(cols) {
+                let headers = /*html*/ `<div style="top: 0; left: ${-BLOCK_WIDTH}px;" class="row-headers">`;
 
-            for (let i = 0; i < cols; i++) {
-                const value = i + 1;
+                for (let i = 0; i < cols; i++) {
+                    const value = i + 1;
 
-                headers += /*html*/ `
+                    headers += /*html*/ `
                     <div 
                         style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px" 
                         class="header"
@@ -167,50 +166,49 @@
                         ${value % 10 === 0 ? value / 10 : '.'}
                     </div>
                 `;
-            }
+                }
 
-            headers += /*html*/ `
+                headers += /*html*/ `
                     <div style="height: ${BLOCK_HEIGHT}px" class="total">${cols}</div>
                 </div>
             `;
 
-            const ui = document.querySelector('#ui');
+                const ui = document.querySelector('#ui');
 
-            if (!ui) return;
+                if (!ui) return;
 
-            ui.insertAdjacentHTML('beforeend', headers);
-        }
-
-        function Display(cols, rows) {
-            const display = document.querySelector('#display');
-
-            if (!display) return;
-
-            display.innerHTML = '';
-
-            display.style.gridTemplateColumns = `repeat(${cols}, ${BLOCK_WIDTH}px)`;
-            display.style.gridTemplateRows = `repeat(${rows}, ${BLOCK_HEIGHT}px)`;
-
-            Pixels(cols, rows);
-        }
-
-        function Pixels(cols, rows) {
-            const text = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.';
-
-            let pixels = '';
-
-            for (let i = 0; i < cols * rows; i++) {
-
-                pixels += /*html*/ `<div class="pixel" data-index="${i}">${text[i] || '_'}</div>\n`;
+                ui.insertAdjacentHTML('beforeend', headers);
             }
 
-            const display = document.querySelector('#display');
+            function Display(cols, rows) {
+                const display = document.querySelector('#display');
 
-            if (!display) return;
+                if (!display) return;
 
-            display.insertAdjacentHTML('beforeend', pixels);
-        }
-    </script>
-</body>
+                display.innerHTML = '';
 
+                display.style.gridTemplateColumns = `repeat(${cols}, ${BLOCK_WIDTH}px)`;
+                display.style.gridTemplateRows = `repeat(${rows}, ${BLOCK_HEIGHT}px)`;
+
+                Pixels(cols, rows);
+            }
+
+            function Pixels(cols, rows) {
+                const text =
+                    'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.';
+
+                let pixels = '';
+
+                for (let i = 0; i < cols * rows; i++) {
+                    pixels += /*html*/ `<div class="pixel" data-index="${i}">${text[i] || '_'}</div>\n`;
+                }
+
+                const display = document.querySelector('#display');
+
+                if (!display) return;
+
+                display.insertAdjacentHTML('beforeend', pixels);
+            }
+        </script>
+    </body>
 </html>

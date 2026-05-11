@@ -3,9 +3,6 @@ import { Display } from './components/Display.js';
 import { debounce, erase, fill } from './lib/utils.js';
 import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE, GRID_COLOR, TEXT_COLOR } from './lib/constants.js';
 
-let isPointerDown = false;
-let isErase = false;
-
 window.addEventListener(
     'resize',
     debounce(() => main()),

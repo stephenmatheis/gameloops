@@ -1,3 +1,6 @@
+import { store } from '../stores/store.js';
+import { fill, erase } from '../lib/utils.js';
+
 export function Pixels(cols, rows) {
     const display = document.querySelector('#display');
 
@@ -9,17 +12,7 @@ export function Pixels(cols, rows) {
         const row = Math.floor(i / cols);
         const col = i % cols;
 
-        pixels += /*html*/ `
-            <div 
-                class="pixel" 
-                data-index="${i}"
-                data-row="${row}"
-                data-col="${col}"
-                oncontextmenu="return false;"
-            >
-                <!-- &centerdot; -->
-            </div>
-        `;
+        pixels += /*html*/ `<div class="pixel" data-index="${i}" data-row="${row}" data-col="${col}" oncontextmenu="return false;"></div>`;
     }
 
     display.insertAdjacentHTML('beforeend', pixels);
@@ -30,13 +23,14 @@ export function Pixels(cols, rows) {
         node.addEventListener('pointerdown', (event) => {
             event.preventDefault();
 
-            isPointerDown = true;
+            store.down();
 
             if (event.button === 2) {
                 event.preventDefault();
 
-                isErase = true;
+                store.erase();
 
+                // FIXME: same name
                 erase(node);
 
                 return;
@@ -48,8 +42,8 @@ export function Pixels(cols, rows) {
         node.addEventListener('pointerup', (event) => {
             event.preventDefault();
 
-            isPointerDown = false;
-            isErase = false;
+            store.up();
+            store.fill();
         });
 
         node.addEventListener('pointerenter', () => {
@@ -61,9 +55,9 @@ export function Pixels(cols, rows) {
 
             readout.innerHTML = text;
 
-            if (!isPointerDown) return;
+            if (!store.isPointerDown) return;
 
-            if (isErase) {
+            if (store.isErase) {
                 console.log('erase', text);
                 erase(node);
             } else {

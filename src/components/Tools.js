@@ -1,4 +1,5 @@
 import { BLOCK_HEIGHT } from '../lib/constants.js';
+import { erase } from '../lib/utils.js';
 
 export function Tools() {
     const ui = document.querySelector('#ui');

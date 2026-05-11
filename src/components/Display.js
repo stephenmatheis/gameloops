@@ -1,5 +1,6 @@
 import { Pixels } from './Pixels.js';
 import { GridLines } from './GridLines.js';
+import { store } from '../stores/store.js';
 import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE } from '../lib/constants.js';
 
 export function Display(cols, rows) {
@@ -14,8 +15,8 @@ export function Display(cols, rows) {
     display.style.gap = `${GAP_SIZE}px`;
 
     display.addEventListener('mouseleave', () => {
-        isPointerDown = false;
-        isErase = false;
+        store.up();
+        store.fill();
     });
 
     Pixels(cols, rows);

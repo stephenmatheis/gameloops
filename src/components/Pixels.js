@@ -47,7 +47,7 @@ export function Pixels(cols, rows) {
         });
 
         node.addEventListener('pointerenter', () => {
-            const readout = document.querySelector('.readout');
+            const readout = document.querySelector('.position');
 
             if (!readout) return;
 

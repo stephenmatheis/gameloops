@@ -1,5 +1,6 @@
 import { ColumnHeaders } from './ColumnHeaders.js';
 import { RowHeaders } from './RowHeaders.js';
+import { Controls } from './Controls.js';
 import { Tools } from './Tools.js';
 import { Readout } from './Readout.js';
 import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE } from '../lib/constants.js';
@@ -17,6 +18,7 @@ export function UI(maxCols, maxRows) {
 
     ColumnHeaders(maxCols);
     RowHeaders(maxRows);
+    Controls();
     Tools();
-    Readout();
+    Readout(maxCols, maxRows);
 }

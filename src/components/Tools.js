@@ -6,28 +6,28 @@ export function Tools() {
 
     if (!ui) return;
 
-    ui.insertAdjacentHTML(
-        'beforeend',
-        /*html*/ `
-            <div
-                style="bottom: ${-BLOCK_HEIGHT}px; height: ${BLOCK_HEIGHT}px" 
-                class="tools"
-            >
-                <button class="reset">Reset</button>
+    // ui.insertAdjacentHTML(
+    //     'beforeend',
+    //     /*html*/ `
+    //         <div
+    //             style="bottom: ${-BLOCK_HEIGHT}px; height: ${BLOCK_HEIGHT}px" 
+    //             class="tools"
+    //         >
+    //             <button class="reset">Reset</button>
 
-            </div>
-        `,
-    );
+    //         </div>
+    //     `,
+    // );
 
-    const reset = ui.querySelector('.reset');
+    // const reset = ui.querySelector('.reset');
 
-    if (!reset) return;
+    // if (!reset) return;
 
-    reset.addEventListener('pointerdown', () => {
-        const nodes = display.querySelectorAll('.pixel');
+    // reset.addEventListener('pointerdown', () => {
+    //     const nodes = display.querySelectorAll('.pixel');
 
-        nodes.forEach((node) => {
-            erase(node);
-        });
-    });
+    //     nodes.forEach((node) => {
+    //         erase(node);
+    //     });
+    // });
 }

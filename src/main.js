@@ -5,7 +5,10 @@ import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE, GRID_COLOR, TEXT_COLOR } from './l
 
 window.addEventListener(
     'resize',
-    debounce(() => main()),
+    debounce(() => {
+        // FIXME: This erases the grid.
+        main();
+    }),
 );
 
 main();
@@ -17,6 +20,9 @@ function main() {
     console.log(`Grid size: ${maxCols} columns x ${maxRows} rows`);
 
     document.body.style.perspective = `${window.innerWidth}px`;
+
+    document.documentElement.style.setProperty('--block-width', `${BLOCK_WIDTH}px`);
+    document.documentElement.style.setProperty('--block-height', `${BLOCK_HEIGHT}px`);
 
     UI(maxCols, maxRows);
     Display(maxCols, maxRows);

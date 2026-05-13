@@ -17,6 +17,12 @@ export function Display(cols, rows) {
     display.addEventListener('mouseleave', () => {
         store.up();
         store.fill();
+
+        const readout = document.querySelector('.position');
+
+        if (!readout) return;
+
+        readout.innerHTML = '0 (0, 0)';
     });
 
     Pixels(cols, rows);

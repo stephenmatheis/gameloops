@@ -1,5 +1,6 @@
 # Ideas
 
+- Add undo and redo
 - Add layers
 - Add other colors
 - Add brush sizes

@@ -31,9 +31,9 @@ button {
     font-family: inherit;
 }
 
-#screen {
+/* #screen {
     transform: rotate3d(0, 1, 0, -20deg) translateX(-100px) translateZ(-200px) scale(0.8);
-}
+} */
 
 .header,
 .pixel,
@@ -86,7 +86,7 @@ button {
     .col-lines {
         .line {
             height: 100%;
-            width: 20px;
+            width: var(--block-width);
             justify-content: center;
 
             &:first-child {
@@ -120,7 +120,7 @@ button {
         flex-direction: column;
 
         .line {
-            height: 20px;
+            height: var(--block-height);
             width: 100%;
             align-items: center;
 
@@ -159,6 +159,10 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    &.hidden {
+        display: none;
+    }
+
     .column-headers,
     .row-headers {
         pointer-events: all;
@@ -174,13 +178,24 @@ button {
         flex-direction: column;
     }
 
+    .controls {
+        pointer-events: all;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1ch;
+    }
+
     .tools {
         pointer-events: all;
         position: absolute;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        /* width: 100%; */
+        left: 50%;
+        transform: translateX(-50%);
 
         button {
             cursor: pointer;
@@ -193,5 +208,6 @@ button {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 1ch;
     }
 }

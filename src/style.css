@@ -45,7 +45,7 @@ button {
     font-size: 10px;
 }
 
-#display {
+#canvas {
     position: relative;
     display: grid;
 

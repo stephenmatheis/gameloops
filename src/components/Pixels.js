@@ -2,7 +2,7 @@ import { store } from '../stores/store.js';
 import { fill, erase } from '../lib/utils.js';
 
 export function Pixels(cols, rows) {
-    const display = document.querySelector('#display');
+    const display = document.querySelector('#canvas');
 
     if (!display) return;
 

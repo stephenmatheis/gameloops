@@ -4,7 +4,7 @@ import { store } from '../stores/store.js';
 import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE } from '../lib/constants.js';
 
 export function Display(cols, rows) {
-    const display = document.querySelector('#display');
+    const display = document.querySelector('#canvas');
 
     if (!display) return;
 

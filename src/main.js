@@ -24,6 +24,6 @@ function main() {
     document.documentElement.style.setProperty('--block-width', `${BLOCK_WIDTH}px`);
     document.documentElement.style.setProperty('--block-height', `${BLOCK_HEIGHT}px`);
 
-    UI(maxCols, maxRows);
+    // UI(maxCols, maxRows);
     Display(maxCols, maxRows);
 }

@@ -1,5 +1,5 @@
 export function GridLines(cols, rows) {
-    const display = document.querySelector('#display');
+    const display = document.querySelector('#canvas');
 
     if (!display) return;
 

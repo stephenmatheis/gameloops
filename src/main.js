@@ -15,6 +15,16 @@ window.addEventListener(
 main();
 
 function main() {
+    // START Guide
+
+    const guide = document.querySelector('#guide');
+
+    if (guide) {
+        guide.innerHTML = `Viewport ${window.innerWidth}px x ${window.innerHeight}`;
+    }
+
+    // END Guide
+
     console.log(`[Viewport]\t\t${window.innerWidth}px x ${window.innerHeight}px`);
     console.log(`[Block size]\t${BLOCK_WIDTH}px x ${BLOCK_HEIGHT}px`);
 
@@ -31,6 +41,7 @@ function main() {
     const maxRows = Math.ceil(window.innerHeight / BLOCK_HEIGHT);
 
     console.log(`[Dimensions]\t${maxCols} columns x ${maxRows} rows`);
+    console.log(`[Chunk size]\t${maxCols} columns x ${maxRows} rows`);
 
     document.body.style.perspective = `${window.innerWidth}px`;
 

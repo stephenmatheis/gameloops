@@ -11,9 +11,9 @@ export function debounce(func, delay = 100) {
 }
 
 export function erase(node) {
-    node.style.backgroundColor = '#ffffff';
-    node.style.border = 'none';
-    node.style.zIndex = 0;
+    node.style.removeProperty('background-color');
+    node.style.removeProperty('border');
+    node.style.removeProperty('z-index');
 }
 
 export function fill(node) {

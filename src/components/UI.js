@@ -12,13 +12,12 @@ export function UI(maxCols, maxRows) {
 
     ui.innerHTML = '';
 
-    // blocks + gap + border
     ui.style.width = `${maxCols * BLOCK_WIDTH + (GAP_SIZE ? maxCols - GAP_SIZE : 0) + GAP_SIZE * 2}px`;
     ui.style.height = `${maxRows * BLOCK_HEIGHT + (GAP_SIZE ? maxRows - GAP_SIZE : 0) + GAP_SIZE * 2}px`;
 
     ColumnHeaders(maxCols);
     RowHeaders(maxRows);
-    Controls();
-    Tools();
-    Readout(maxCols, maxRows);
+    // Controls();
+    // Tools();
+    // Readout(maxCols, maxRows);
 }

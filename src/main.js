@@ -47,8 +47,10 @@ function main() {
 
     document.documentElement.style.setProperty('--block-width', `${BLOCK_WIDTH}px`);
     document.documentElement.style.setProperty('--block-height', `${BLOCK_HEIGHT}px`);
+    document.documentElement.style.setProperty('--text-color', `${TEXT_COLOR}`);
+    document.documentElement.style.setProperty('--grid-color', `${GRID_COLOR}`);
 
     Display(maxCols, maxRows);
     GridLines(maxCols, maxRows);
-    // UI(maxCols, maxRows);
+    UI(maxCols, maxRows);
 }

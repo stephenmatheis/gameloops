@@ -1,5 +1,4 @@
 :root {
-    --grid-color: #dddddd;
     --pixel-border-color: #404040;
 }
 
@@ -43,14 +42,11 @@ button {
     z-index: 10;
 }
 
-.header,
-.pixel,
-.total {
+.pixel {
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: monospace;
-    font-size: 10px;
 }
 
 #canvas {
@@ -127,38 +123,38 @@ button {
             }
         }
     }
-}
 
-.row-lines {
-    flex-direction: column;
+    .row-lines {
+        flex-direction: column;
 
-    .line {
-        height: var(--block-height);
-        width: 100%;
-        align-items: center;
+        .line {
+            height: var(--block-height);
+            width: 100%;
+            align-items: center;
 
-        &:first-child {
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0px;
+            &:first-child {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0px;
+                    left: 0;
+                    height: 1px;
+                    width: 100%;
+                    background-color: var(--grid-color);
+                }
+            }
+
+            &::after {
+                bottom: -0.5px;
                 left: 0;
                 height: 1px;
                 width: 100%;
-                background-color: var(--grid-color);
             }
-        }
 
-        &::after {
-            bottom: -0.5px;
-            left: 0;
-            height: 1px;
-            width: 100%;
-        }
-
-        &:last-child {
-            &::after {
-                bottom: 0px;
+            &:last-child {
+                &::after {
+                    bottom: 0px;
+                }
             }
         }
     }
@@ -166,10 +162,10 @@ button {
 
 #ui {
     pointer-events: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 
     &.hidden {
         display: none;
@@ -177,17 +173,46 @@ button {
 
     .column-headers,
     .row-headers {
-        pointer-events: all;
-        position: absolute;
+        top: 0;
+        left: 0;
         display: flex;
+
+        .header {
+            display: flex;
+            width: var(--block-width);
+            height: var(--block-height);
+            padding: 16px;
+
+            .number {
+                position: relative;
+                height: 16px;
+                width: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+            }
+        }
     }
 
     .column-headers {
+        position: sticky;
         flex-direction: row;
+
+        .header {
+            justify-content: center;
+        }
     }
 
     .row-headers {
+        transform: translateY(calc(var(--block-height) * -1));
+        position: sticky;
         flex-direction: column;
+        width: fit-content;
+
+        .header {
+            align-items: center;
+        }
     }
 
     .controls {
@@ -205,7 +230,6 @@ button {
         display: flex;
         align-items: center;
         justify-content: center;
-        /* width: 100%; */
         left: 50%;
         transform: translateX(-50%);
 

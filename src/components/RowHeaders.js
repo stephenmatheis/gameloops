@@ -1,27 +1,14 @@
 import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE, TEXT_COLOR } from '../lib/constants.js';
 
-export function RowHeaders(cols) {
-    let headers = /*html*/ `
-        <div 
-            style="
-                top: 0;
-                left: ${-BLOCK_WIDTH}px;
-                gap: ${GAP_SIZE}px;
-                color: ${TEXT_COLOR};
-            "
-            class="row-headers"
-        >
-    `;
+export function RowHeaders(rows) {
+    let headers = /*html*/ `<div class="row-headers">`;
 
-    for (let i = 0; i < cols; i++) {
+    for (let i = 0; i < rows; i++) {
         const value = i + 1;
 
         headers += /*html*/ `
-            <div 
-                style="width: ${BLOCK_WIDTH}px; height: ${BLOCK_HEIGHT}px;"
-                class="header"
-            >
-                ${i}
+            <div class="header">
+                <div class="number">${i}</div>
             </div>
         `;
     }

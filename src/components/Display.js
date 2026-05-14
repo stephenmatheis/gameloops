@@ -1,20 +1,19 @@
 import { Pixels } from './Pixels.js';
-import { GridLines } from './GridLines.js';
 import { store } from '../stores/store.js';
-import { BLOCK_HEIGHT, BLOCK_WIDTH, GAP_SIZE } from '../lib/constants.js';
+import { BLOCK_HEIGHT, BLOCK_WIDTH } from '../lib/constants.js';
 
 export function Display(cols, rows) {
-    const display = document.querySelector('#canvas');
+    const canvas = document.querySelector('#canvas');
 
-    if (!display) return;
+    if (!canvas) return;
 
-    display.innerHTML = '';
+    canvas.innerHTML = '';
+    canvas.style.width = `${cols * BLOCK_WIDTH}px`;
+    canvas.style.height = `${rows * BLOCK_HEIGHT}px`;
+    canvas.style.gridTemplateColumns = `repeat(${cols}, ${BLOCK_WIDTH}px)`;
+    canvas.style.gridTemplateRows = `repeat(${rows}, ${BLOCK_HEIGHT}px)`;
 
-    display.style.gridTemplateColumns = `repeat(${cols}, ${BLOCK_WIDTH}px)`;
-    display.style.gridTemplateRows = `repeat(${rows}, ${BLOCK_HEIGHT}px)`;
-    display.style.gap = `${GAP_SIZE}px`;
-
-    display.addEventListener('mouseleave', () => {
+    canvas.addEventListener('mouseleave', () => {
         store.up();
         store.fill();
 
@@ -26,5 +25,4 @@ export function Display(cols, rows) {
     });
 
     Pixels(cols, rows);
-    GridLines(cols, rows);
 }

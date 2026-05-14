@@ -1,7 +1,7 @@
 // export const BLOCK_WIDTH = 20;
 // export const BLOCK_HEIGHT = 20;
-export const BLOCK_WIDTH = 64;
-export const BLOCK_HEIGHT = 64;
+export const BLOCK_WIDTH = 128;
+export const BLOCK_HEIGHT = 128;
 export const GAP_SIZE = 0;
 export const GRID_COLOR = '#e0e0e050';
 export const TEXT_COLOR = '#767676';

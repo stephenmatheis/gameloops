@@ -16,12 +16,12 @@ html {
     font-size: 12px;
 }
 
-body {
+/* body {
     height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
 button {
     background: none;
@@ -46,7 +46,6 @@ button {
 }
 
 #canvas {
-    position: relative;
     display: grid;
 
     .pixel {
@@ -60,9 +59,17 @@ button {
         }
     }
 
+
+}
+
+#grid {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
     .col-lines,
     .row-lines {
-        pointer-events: none;
         position: absolute;
         top: 0;
         left: 0;
@@ -73,7 +80,6 @@ button {
         .line {
             position: relative;
             display: flex;
-            font-size: 10px;
 
             &::after {
                 content: '';
@@ -115,38 +121,38 @@ button {
             }
         }
     }
+}
 
-    .row-lines {
-        flex-direction: column;
+.row-lines {
+    flex-direction: column;
 
-        .line {
-            height: var(--block-height);
-            width: 100%;
-            align-items: center;
+    .line {
+        height: var(--block-height);
+        width: 100%;
+        align-items: center;
 
-            &:first-child {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 0px;
-                    left: 0;
-                    height: 1px;
-                    width: 100%;
-                    background-color: var(--grid-color);
-                }
-            }
-
-            &::after {
-                bottom: -0.5px;
+        &:first-child {
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0px;
                 left: 0;
                 height: 1px;
                 width: 100%;
+                background-color: var(--grid-color);
             }
+        }
 
-            &:last-child {
-                &::after {
-                    bottom: 0px;
-                }
+        &::after {
+            bottom: -0.5px;
+            left: 0;
+            height: 1px;
+            width: 100%;
+        }
+
+        &:last-child {
+            &::after {
+                bottom: 0px;
             }
         }
     }

@@ -1,18 +1,24 @@
+import { BLOCK_WIDTH, BLOCK_HEIGHT } from '../lib/constants.js';
+
 export function GridLines(cols, rows) {
-    const display = document.querySelector('#canvas');
+    const grid = document.querySelector('#grid');
 
-    if (!display) return;
+    if (!grid) return;
 
-    let grid = /*html*/ `<div class="col-lines">`;
+    grid.innerHTML = '';
+    grid.style.width = `${cols * BLOCK_WIDTH}px`;
+    grid.style.height = `${rows * BLOCK_HEIGHT}px`;
+
+    let lines = /*html*/ `<div class="col-lines">`;
 
     for (let i = 0; i < cols; i++) {
         const row = Math.floor(i / cols);
         const col = i % cols;
 
-        grid += /*html*/ `<div class="line"></div>`;
+        lines += /*html*/ `<div class="line"></div>`;
     }
 
-    grid += /*html*/ `
+    lines += /*html*/ `
         </div>
         <div class="row-lines">
     `;
@@ -21,10 +27,10 @@ export function GridLines(cols, rows) {
         const row = Math.floor(i / cols);
         const col = i % cols;
 
-        grid += /*html*/ `<div class="line"></div>`;
+        lines += /*html*/ `<div class="line"></div>`;
     }
 
-    grid += /*html*/ `</div>`;
+    lines += /*html*/ `</div>`;
 
-    display.insertAdjacentHTML('beforeend', grid);
+    grid.insertAdjacentHTML('beforeend', lines);
 }

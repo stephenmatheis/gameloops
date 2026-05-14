@@ -47,15 +47,9 @@ export function Pixels(cols, rows) {
         });
 
         node.addEventListener('pointerenter', () => {
-            const readout = document.querySelector('.position');
-
-            if (!readout) return;
+            if (!store.isPointerDown) return;
 
             const text = /*html*/ `${node.dataset.index} (${node.dataset.row}, ${node.dataset.col})`;
-
-            readout.innerHTML = text;
-
-            if (!store.isPointerDown) return;
 
             if (store.isErase) {
                 console.log('erase', text);
@@ -64,6 +58,12 @@ export function Pixels(cols, rows) {
                 console.log('paint', text);
                 fill(node);
             }
+
+            const readout = document.querySelector('.position');
+
+            if (!readout) return;
+
+            readout.innerHTML = text;
         });
     });
 }

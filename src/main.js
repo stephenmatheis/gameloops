@@ -35,8 +35,6 @@ function main() {
         `[Max rows?]\t\t${window.innerHeight}px / ${BLOCK_HEIGHT}px = ${window.innerHeight / BLOCK_WIDTH} rows. Round up to ${Math.ceil(window.innerHeight / BLOCK_HEIGHT)}.`,
     );
 
-    // const maxCols = Math.floor(window.innerWidth / (BLOCK_WIDTH + GAP_SIZE)) - 2;
-    // const maxRows = Math.floor(window.innerHeight / (BLOCK_HEIGHT + GAP_SIZE)) - 2;
     const maxCols = Math.ceil(window.innerWidth / BLOCK_WIDTH);
     const maxRows = Math.ceil(window.innerHeight / BLOCK_HEIGHT);
 
